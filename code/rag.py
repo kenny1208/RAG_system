@@ -11,6 +11,7 @@ import os
 from rich.console import Console
 from rich.markdown import Markdown
 from dotenv import load_dotenv
+from glob import glob
 
 
 console = Console()
@@ -24,11 +25,16 @@ chat_model = ChatGoogleGenerativeAI(
     model="gemini-1.5-pro-latest"
 )
 
-loader = PyPDFLoader("../data/1neural_network.pdf")
+pdf_paths = glob("../data/*.pdf")
+all_pages = []
+for path in pdf_paths:
+    loader = PyPDFLoader(path)
+    pages = loader.load_and_split()
+    all_pages.extend(pages)
 pages = loader.load_and_split()
 
 text_splitter = NLTKTextSplitter(chunk_size=500, chunk_overlap=100)
-chunks = text_splitter.split_documents(pages)
+chunks = text_splitter.split_documents(all_pages)
 
 embedding = GoogleGenerativeAIEmbeddings(google_api_key=api_key, model="models/embedding-001")
 
