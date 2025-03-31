@@ -1,78 +1,55 @@
-import streamlit as st
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import NLTKTextSplitter
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_core.messages import SystemMessage
 from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
+import nltk
+import os
 
-# Read the API key
-key = "AIzaSyBvjfo0zBAOggUjMmuu1H_O3olEgNf5itk"
+nltk.download('punkt')
 
-#  Setup chat model
-chat_model = ChatGoogleGenerativeAI(google_api_key=key, model="gemini-1.5-pro-latest")
+api_key = "AIzaSyBvjfo0zBAOggUjMmuu1H_O3olEgNf5itk"
 
-# Load the doc
-loader = PyPDFLoader("1neural_network.pdf")
+chat_model = ChatGoogleGenerativeAI(
+    google_api_key=api_key,
+    model="gemini-1.5-pro-latest"
+)
+
+loader = PyPDFLoader("../data/1neural_network.pdf")
 pages = loader.load_and_split()
 
-# Split the document into chunks
 text_splitter = NLTKTextSplitter(chunk_size=500, chunk_overlap=100)
 chunks = text_splitter.split_documents(pages)
 
-# Creating Chunks Embedding
-embedding_model = GoogleGenerativeAIEmbeddings(google_api_key=key, model="models/embedding-001")
+embedding = GoogleGenerativeAIEmbeddings(google_api_key=api_key)
+vectorstore = Chroma.from_documents(chunks, embedding)
+retriever = vectorstore.as_retriever()
 
-# Embed each chunk and load it into the vector store
-db = Chroma.from_documents(chunks, embedding_model, persist_directory="./chroma_db_")
-
-# Persist the database on drive
-db.persist()
-
-# Setting a Connection with the ChromaDB
-db_connection = Chroma(persist_directory="./chroma_db_", embedding_function=embedding_model)
-
-# Converting CHROMA db_connection to Retriever Object
-retriever = db_connection.as_retriever(search_kwargs={"k": 5})
-
-# Setup chat template
-chat_template = ChatPromptTemplate.from_messages([
-    # System Message Prompt Template
-    SystemMessage(content="""You are a teacher in Scaffolding Instruction education system.
+prompt = ChatPromptTemplate.from_messages([
+    SystemMessage(content="""You are a teacher in Scaffolding Instruction education.
                   Given a context and question from user,
                   you should answer based on the given context."""),
-    # Human Message Prompt Template
     HumanMessagePromptTemplate.from_template("""Answer the question based on the given context.
     Context: {context}
     Question: {question}
     Answer: """)
 ])
 
-# set up output parser 
-output_parser = StrOutputParser()
 
-# rag chain
-def format_docs(docs):
-    return "\n\n".join(doc.page_content for doc in docs)
-
-rag_chain = (
-    {"context": retriever | format_docs, "question": RunnablePassthrough()}
-    | chat_template
+chain = (
+    {"context": retriever | RunnablePassthrough(), "question": RunnablePassthrough()}
+    | prompt
     | chat_model
-    | output_parser
+    | StrOutputParser()
 )
-# Streamlit UI
-with st.sidebar:
-    st.title(":blue[A Retrieval Augmented Scaffolding Instruction System]")
-st.title(":blue[💬Document Chatbot]")
-query = st.text_area("Enter your query:", placeholder="Enter your query here...", height=100)
 
-if st.button("Submit Your Query"):
-    if query:
-        response = rag_chain.invoke(query)
-        st.write(response)
-    else:
-        st.warning("Please enter a question.")
+while True:
+    user_input = input("Write your question (or type 'exit' to quit): ")
+    if user_input.lower() == 'exit':
+        break
+    result = chain.invoke(user_input)
+    print("\n LLM answer：", result)
+    print("\n--------------------------\n")
