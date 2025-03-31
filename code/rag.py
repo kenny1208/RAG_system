@@ -24,7 +24,8 @@ pages = loader.load_and_split()
 text_splitter = NLTKTextSplitter(chunk_size=500, chunk_overlap=100)
 chunks = text_splitter.split_documents(pages)
 
-embedding = GoogleGenerativeAIEmbeddings(google_api_key=api_key)
+embedding = GoogleGenerativeAIEmbeddings(google_api_key=api_key, model="models/embedding-001")
+
 vectorstore = Chroma.from_documents(chunks, embedding)
 retriever = vectorstore.as_retriever()
 
