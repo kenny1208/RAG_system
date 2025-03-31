@@ -8,8 +8,11 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 import nltk
 import os
+from rich.console import Console
+from rich.markdown import Markdown
 
-nltk.download('punkt')
+console = Console()
+#nltk.download('punkt')
 
 api_key = "AIzaSyBvjfo0zBAOggUjMmuu1H_O3olEgNf5itk"
 
@@ -52,5 +55,5 @@ while True:
     if user_input.lower() == 'exit':
         break
     result = chain.invoke(user_input)
-    print("\n LLM answer：", result)
+    console.print(Markdown(f"\n{result}\n"))
     print("\n--------------------------\n")
