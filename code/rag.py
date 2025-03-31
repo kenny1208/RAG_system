@@ -10,11 +10,14 @@ import nltk
 import os
 from rich.console import Console
 from rich.markdown import Markdown
+from dotenv import load_dotenv
+
 
 console = Console()
 #nltk.download('punkt')
 
-api_key = "AIzaSyBvjfo0zBAOggUjMmuu1H_O3olEgNf5itk"
+load_dotenv()  
+api_key = os.getenv("GOOGLE_API_KEY")
 
 chat_model = ChatGoogleGenerativeAI(
     google_api_key=api_key,
