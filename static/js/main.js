@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
           uploadStatus.className = "status success";
           uploadStatus.style.display = "block";
 
-          summaryContent.textContent = data.summary;
+          summaryContent.innerHTML = marked.parse(data.summary);
 
           // Enable chat functionality
           questionInput.disabled = false;
@@ -193,8 +193,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function addMessage(text, sender) {
     const messageDiv = document.createElement("div");
     messageDiv.className = `message ${sender}-message`;
-    messageDiv.textContent = text;
-
+    messageDiv.innerHTML = marked.parse(text);
     messages.appendChild(messageDiv);
     messages.scrollTop = messages.scrollHeight;
   }
