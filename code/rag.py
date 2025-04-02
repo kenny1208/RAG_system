@@ -41,6 +41,29 @@ embedding = GoogleGenerativeAIEmbeddings(google_api_key=api_key, model="models/e
 vectorstore = Chroma.from_documents(chunks, embedding)
 retriever = vectorstore.as_retriever()
 
+summary_prompt = ChatPromptTemplate.from_messages([
+    SystemMessage(content="You are a helpful assistant that summarizes technical documents."),
+    HumanMessagePromptTemplate.from_template("""Summarize the following content into a bullet-point outline for review:
+
+{context}
+
+Summary:""")
+])
+
+summary_chain = (
+    RunnablePassthrough()
+    | (lambda docs: {"context": "\n\n".join([d.page_content for d in docs])})
+    | summary_prompt
+    | chat_model
+    | StrOutputParser()
+)
+
+# Get the summary of the document
+console.print("[bold yellow]📘 Summary:[/bold yellow]")
+summary = summary_chain.invoke(chunks)
+console.print(Markdown(summary))
+print("\n" + "-" * 30 + "\n")
+
 prompt = ChatPromptTemplate.from_messages([
     SystemMessage(content="""You are a teacher in Scaffolding Instruction education.
                   Given a context and question from user,
