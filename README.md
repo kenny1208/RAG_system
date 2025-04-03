@@ -32,18 +32,10 @@ A web-based application that enables users to upload PDF documents, automaticall
 1. Clone the repo:
 
 ```bash
-git clone https://github.com/your-username/pdf-rag-assistant.git
-cd pdf-rag-assistant
+git clone https://github.com/kenny1208/RAG_system.git
 ```
 
-2. Create a virtual environment and activate it:
-
-```bash
-python -m venv venv
-source venv/bin/activate  # or venv\Scripts\activate on Windows
-```
-
-3. Install dependencies:
+2. Install dependencies:
 
 ```bash
 pip install -r requirements.txt
@@ -68,7 +60,8 @@ python app.py
 ```
 .
 ├── app.py                # Flask backend
-├── rag.py                # CLI testing script (RAG logic)
+├── code/
+│   └── rag.py                # CLI testing script (RAG logic)
 ├── templates/
 │   └── index.html        # Main web page
 ├── static/
