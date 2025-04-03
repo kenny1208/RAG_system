@@ -1,30 +1,109 @@
-# Gemini RAG Scaffolding QA System
+# 📘 PDF RAG Assistant
 
-A simple yet powerful Retrieval-Augmented Generation (RAG) system using **LangChain**, **Google Gemini**, and **PDF documents** — designed for educational applications, especially **Scaffolding Instruction**.
+A web-based application that enables users to upload PDF documents, automatically generates a summary of their content, and allows interactive question answering using a Retrieval-Augmented Generation (RAG) pipeline powered by Google's Gemini models.
 
-> Ask questions based on multiple PDF files and get intelligent, context-aware answers!
+## ✨ Features
 
----
+- 📄 Upload and process multiple PDF files
+- 📝 Automatic document summarization
+- 💬 Ask questions about the documents
+- ⚡ Fast and interactive Q&A system
+- 🎨 Responsive and modern UI (HTML/CSS/JS)
 
-## Features
+## 🖥️ Tech Stack
 
-- Load multiple PDF files automatically
-- Uses LangChain + Google Generative AI (`gemini-1.5-pro-latest`)
-- Embedding powered by `models/embedding-001`
-- Interactive Q&A loop via terminal
-- Clean output formatted in **Markdown**
-- API key is safely stored using `.env` file
+- **Frontend**: HTML, CSS, JavaScript
+- **Backend**: Python (Flask)
+- **AI Model**: LangChain + Google Generative AI (Gemini 1.5 Pro)
+- **Embeddings**: Google Generative AI Embeddings
+- **Vector Store**: Chroma DB
+- **PDF Parsing**: LangChain PDF Loader
 
----
+## 🚀 Getting Started
 
-## Tech Stack
+### Prerequisites
 
-- Python 3.10+
-- [LangChain](https://github.com/langchain-ai/langchain)
-- [Google Generative AI (Gemini)](https://ai.google.dev/)
-- [Chroma VectorStore](https://github.com/chroma-core/chroma)
-- PDF Loader via `langchain_community`
-- `python-dotenv` for environment variable
-- `rich` for Markdown terminal output
+- Python 3.8+
+- Node.js (for frontend if needed)
+- Google API Key for Gemini (set in `.env`)
 
----
+### Installation
+
+1. Clone the repo:
+
+```bash
+git clone https://github.com/your-username/pdf-rag-assistant.git
+cd pdf-rag-assistant
+```
+
+2. Create a virtual environment and activate it:
+
+```bash
+python -m venv venv
+source venv/bin/activate  # or venv\Scripts\activate on Windows
+```
+
+3. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+4. Set your API key in a `.env` file:
+
+```env
+GOOGLE_API_KEY=your_google_api_key_here
+```
+
+5. Run the Flask app:
+
+```bash
+python app.py
+```
+
+6. Open your browser and go to [http://127.0.0.1:5000](http://127.0.0.1:5000)
+
+## 🗃️ Project Structure
+
+```
+.
+├── app.py                # Flask backend
+├── rag.py                # CLI testing script (RAG logic)
+├── templates/
+│   └── index.html        # Main web page
+├── static/
+│   ├── css/
+│   │   └── styles.css    # Styles
+│   └── js/
+│       └── main.js       # Frontend interactivity
+├── uploads/              # Temporary uploaded files
+├── vectordbs/            # Persistent vector storage
+├── .env                  # API keys and config (not committed)
+```
+
+## 📦 API Endpoints
+
+- `GET /` – Web interface
+- `POST /upload` – Upload PDFs and generate summary
+- `POST /ask` – Ask a question about uploaded documents
+
+## 🛡️ Environment Variables
+
+| Variable         | Description                       |
+| ---------------- | --------------------------------- |
+| `GOOGLE_API_KEY` | Your Google Generative AI API Key |
+
+## ✅ To-Do
+
+- [ ] Add login and user management
+- [ ] Support other file types (e.g., DOCX)
+- [ ] Add citations and sources to answers
+- [ ] Deploy to cloud (e.g., Render, Vercel, GCP)
+
+## 🤝 Contributing
+
+Pull requests are welcome! For major changes, please open an issue first to discuss what you’d like to change.
+
+## 📄 License
+
+MIT License – see [`LICENSE`](LICENSE) for details.
