@@ -23,8 +23,7 @@ A web-based application that enables users to upload PDF documents, automaticall
 
 ### Prerequisites
 
-- Python 3.8+
-- Node.js (for frontend if needed)
+- Python 3.8 or higher
 - Google API Key for Gemini (set in `.env`)
 
 ### Installation
