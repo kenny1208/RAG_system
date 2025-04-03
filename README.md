@@ -10,6 +10,10 @@ A web-based application that enables users to upload PDF documents, automaticall
 - ⚡ Fast and interactive Q&A system
 - 🎨 Responsive and modern UI (HTML/CSS/JS)
 
+## 🖼️ Demo Preview
+![image](https://github.com/user-attachments/assets/dfbcd28d-3bd7-4529-bd7b-192eeac983c8)
+
+
 ## 🖥️ Tech Stack
 
 - **Frontend**: HTML, CSS, JavaScript
@@ -71,12 +75,6 @@ python app.py
 ├── requirements.txt
 ├── .env                  # API keys and config (not committed)
 ```
-
-## 📦 API Endpoints
-
-- `GET /` – Web interface
-- `POST /upload` – Upload PDFs and generate summary
-- `POST /ask` – Ask a question about uploaded documents
 
 ## 🛡️ Environment Variables
 
