@@ -41,19 +41,17 @@ git clone https://github.com/kenny1208/RAG_system.git
 pip install -r requirements.txt
 ```
 
-4. Set your API key in a `.env` file:
+3. Set your API key in a `.env` file:
 
 ```env
 GOOGLE_API_KEY=your_google_api_key_here
 ```
 
-5. Run the Flask app:
+4. Run the Flask app:
 
 ```bash
 python app.py
 ```
-
-6. Open your browser and go to [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
 ## 🗃️ Project Structure
 
@@ -88,15 +86,9 @@ python app.py
 
 ## ✅ To-Do
 
-- [ ] Add login and user management
 - [ ] Support other file types (e.g., DOCX)
 - [ ] Add citations and sources to answers
-- [ ] Deploy to cloud (e.g., Render, Vercel, GCP)
 
 ## 🤝 Contributing
 
 Pull requests are welcome! For major changes, please open an issue first to discuss what you’d like to change.
-
-## 📄 License
-
-MIT License – see [`LICENSE`](LICENSE) for details.
