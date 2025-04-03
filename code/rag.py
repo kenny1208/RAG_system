@@ -65,9 +65,8 @@ console.print(Markdown(summary))
 print("\n" + "-" * 30 + "\n")
 
 prompt = ChatPromptTemplate.from_messages([
-    SystemMessage(content="""You are a teacher in Scaffolding Instruction education.
-                  Given a context and question from user,
-                  you should answer based on the given context."""),
+    SystemMessage(content="""You are a helpful assistant that answers questions based on the provided context.
+        You will be given a context and a question. Provide a concise answer based on the context."""),
     HumanMessagePromptTemplate.from_template("""Answer the question based on the given context.
     Context: {context}
     Question: {question}
