@@ -58,7 +58,7 @@ python app.py
 .
 ├── app.py                # Flask backend
 ├── code/
-│   └── rag.py                # CLI testing script (RAG logic)
+│   └── rag.py            # CLI testing script (RAG logic)
 ├── templates/
 │   └── index.html        # Main web page
 ├── static/
@@ -68,6 +68,7 @@ python app.py
 │       └── main.js       # Frontend interactivity
 ├── uploads/              # Temporary uploaded files
 ├── vectordbs/            # Persistent vector storage
+├── requirements.txt
 ├── .env                  # API keys and config (not committed)
 ```
 
