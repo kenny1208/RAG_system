@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PDF RAG System</title>
     <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
       rel="stylesheet"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link
@@ -28,19 +28,19 @@
       <div class="app-description">
         <p>
           Upload your PDF documents and ask questions about their content. Our
-          AI assistant will provide answers based on the information in your
-          documents.
+          AI assistant will provide detailed answers based on the information in
+          your documents using advanced retrieval augmented generation.
         </p>
       </div>
 
       <div class="app-container">
         <div class="card">
           <h2><i class="fas fa-file-upload"></i> Upload Documents</h2>
-          <p>Select one or more PDF files to analyze:</p>
+          <p>Select one or more PDF files to analyze and query:</p>
 
           <div id="upload-area" class="upload-area">
             <i class="fas fa-cloud-upload-alt"></i>
-            <p>Drag & drop PDF files here or click to select</p>
+            <p>Drag & drop PDF files here or click to browse</p>
             <input
               type="file"
               id="file-input"
@@ -53,7 +53,7 @@
           <ul id="file-list"></ul>
 
           <button id="upload-btn" class="upload-btn" disabled>
-            Process Documents
+            <i class="fas fa-cogs"></i> Process Documents
           </button>
 
           <div id="upload-loader" class="loader">
@@ -65,7 +65,7 @@
 
         <div class="card">
           <h2><i class="fas fa-file-alt"></i> Document Summary</h2>
-          <p>A summary of your uploaded documents will appear here:</p>
+          <p>An AI-generated overview of your uploaded documents:</p>
           <div id="summary-content">
             No documents processed yet. Upload PDFs to see a summary.
           </div>
@@ -73,13 +73,15 @@
 
         <div class="card" style="grid-column: 1 / -1">
           <h2><i class="fas fa-comments"></i> Ask Questions</h2>
-          <p>Ask questions about your documents:</p>
+          <p>
+            Ask any question about your documents and get AI-powered answers:
+          </p>
 
           <div class="chat-container">
             <div id="messages" class="messages">
               <div class="message bot-message">
-                Hello! Upload some PDF documents, and I'll be ready to answer
-                your questions about them.
+                <i class="fas fa-robot"></i> Hello! Upload some PDF documents,
+                and I'll be ready to answer your questions about them.
               </div>
             </div>
 
@@ -90,7 +92,9 @@
                 placeholder="Ask a question about your documents..."
                 disabled
               />
-              <button id="ask-btn" disabled>Ask</button>
+              <button id="ask-btn" disabled>
+                <i class="fas fa-paper-plane"></i>
+              </button>
             </div>
 
             <div id="chat-loader" class="loader">

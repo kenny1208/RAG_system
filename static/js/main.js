@@ -13,22 +13,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let files = [];
 
-  // Handle drag and drop events
+  // Handle drag and drop events with animated feedback
   uploadArea.addEventListener("dragover", function (e) {
     e.preventDefault();
-    uploadArea.style.borderColor = "#4fc3dc";
-    uploadArea.style.backgroundColor = "rgba(79, 195, 220, 0.1)";
+    uploadArea.style.borderColor = "#09b6c7";
+    uploadArea.style.backgroundColor = "rgba(44, 201, 215, 0.1)";
+    uploadArea.style.transform = "scale(1.02)";
   });
 
   uploadArea.addEventListener("dragleave", function () {
-    uploadArea.style.borderColor = "#4fc3dc";
-    uploadArea.style.backgroundColor = "";
+    uploadArea.style.borderColor = "#2cc9d7";
+    uploadArea.style.backgroundColor = "rgba(44, 201, 215, 0.03)";
+    uploadArea.style.transform = "scale(1)";
   });
 
   uploadArea.addEventListener("drop", function (e) {
     e.preventDefault();
-    uploadArea.style.borderColor = "#4fc3dc";
-    uploadArea.style.backgroundColor = "";
+    uploadArea.style.borderColor = "#2cc9d7";
+    uploadArea.style.backgroundColor = "rgba(44, 201, 215, 0.03)";
+    uploadArea.style.transform = "scale(1)";
 
     handleFiles(e.dataTransfer.files);
   });
@@ -58,8 +61,10 @@ document.addEventListener("DOMContentLoaded", function () {
     files.forEach((file, index) => {
       const li = document.createElement("li");
       li.innerHTML = `
-                <span>${file.name} (${formatFileSize(file.size)})</span>
-                <button class="remove-btn" data-index="${index}">
+                <span><i class="fas fa-file-pdf" style="color: #e53e3e; margin-right: 8px;"></i>${
+                  file.name
+                } (${formatFileSize(file.size)})</span>
+                <button class="remove-btn" data-index="${index}" title="Remove file">
                     <i class="fas fa-times"></i>
                 </button>
             `;
@@ -95,6 +100,10 @@ document.addEventListener("DOMContentLoaded", function () {
     uploadLoader.style.display = "block";
     uploadBtn.disabled = true;
 
+    // Add loading animation to button
+    uploadBtn.innerHTML =
+      '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
     fetch("/upload", {
       method: "POST",
       body: formData,
@@ -102,27 +111,46 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => response.json())
       .then((data) => {
         uploadLoader.style.display = "none";
+        uploadBtn.innerHTML = '<i class="fas fa-cogs"></i> Process Documents';
 
         if (data.success) {
           uploadStatus.textContent = data.message;
           uploadStatus.className = "status success";
           uploadStatus.style.display = "block";
 
+          // Add fade-in animation to summary
+          summaryContent.style.opacity = "0";
           summaryContent.innerHTML = marked.parse(data.summary);
 
-          // Enable chat functionality
+          // Fade in the content
+          setTimeout(() => {
+            summaryContent.style.transition = "opacity 0.5s ease";
+            summaryContent.style.opacity = "1";
+          }, 100);
+
+          // Enable chat functionality with visual cue
           questionInput.disabled = false;
           askBtn.disabled = false;
 
-          // Add a system message
+          questionInput.placeholder = "Your question about the documents...";
+          questionInput.focus();
+
+          // Add a system message with animation
           addMessage(
-            "Documents processed! I'm ready to answer your questions.",
+            "<i class='fas fa-check-circle'></i> Documents processed! I'm ready to answer your questions about the content.",
             "bot"
           );
 
           // Clear file list
           files = [];
           updateFileList();
+
+          // Scroll to chat section
+          setTimeout(() => {
+            document
+              .querySelector(".card:last-child")
+              .scrollIntoView({ behavior: "smooth" });
+          }, 500);
         } else {
           uploadStatus.textContent = data.error || "An error occurred";
           uploadStatus.className = "status error";
@@ -132,6 +160,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .catch((error) => {
         uploadLoader.style.display = "none";
+        uploadBtn.innerHTML = '<i class="fas fa-cogs"></i> Process Documents';
         uploadStatus.textContent = "Error: " + error.message;
         uploadStatus.className = "status error";
         uploadStatus.style.display = "block";
@@ -158,6 +187,9 @@ document.addEventListener("DOMContentLoaded", function () {
     questionInput.disabled = true;
     askBtn.disabled = true;
 
+    // Add loading animation
+    askBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
     fetch("/ask", {
       method: "POST",
       headers: {
@@ -170,12 +202,14 @@ document.addEventListener("DOMContentLoaded", function () {
         chatLoader.style.display = "none";
         questionInput.disabled = false;
         askBtn.disabled = false;
+        askBtn.innerHTML = '<i class="fas fa-paper-plane"></i>';
 
         if (data.answer) {
           addMessage(data.answer, "bot");
         } else {
           addMessage(
-            "I encountered an error: " + (data.error || "Unknown error"),
+            "<i class='fas fa-exclamation-circle'></i> I encountered an error: " +
+              (data.error || "Unknown error"),
             "bot"
           );
         }
@@ -186,15 +220,32 @@ document.addEventListener("DOMContentLoaded", function () {
         chatLoader.style.display = "none";
         questionInput.disabled = false;
         askBtn.disabled = false;
-        addMessage("Error: " + error.message, "bot");
+        askBtn.innerHTML = '<i class="fas fa-paper-plane"></i>';
+        addMessage(
+          "<i class='fas fa-exclamation-triangle'></i> Error: " + error.message,
+          "bot"
+        );
       });
   }
 
   function addMessage(text, sender) {
     const messageDiv = document.createElement("div");
     messageDiv.className = `message ${sender}-message`;
+
+    // Start with opacity 0 for fade-in effect
+    messageDiv.style.opacity = "0";
+    messageDiv.style.transform = "translateY(20px)";
+
     messageDiv.innerHTML = marked.parse(text);
     messages.appendChild(messageDiv);
+
+    // Trigger animation
+    setTimeout(() => {
+      messageDiv.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+      messageDiv.style.opacity = "1";
+      messageDiv.style.transform = "translateY(0)";
+    }, 10);
+
     messages.scrollTop = messages.scrollHeight;
   }
 });
