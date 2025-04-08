@@ -67,7 +67,7 @@ header h1 i {
 
 @media (min-width: 768px) {
   .app-container {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 3fr;
   }
 }
 

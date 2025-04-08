@@ -19,7 +19,7 @@ app.secret_key = os.urandom(24)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['VECTOR_DB_DIR'] = 'vectordbs'  # Directory to store vector databases
 app.config['ALLOWED_EXTENSIONS'] = {'pdf'}
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload
+app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 16MB max upload
 
 # Ensure directories exist
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -46,7 +46,7 @@ def process_pdfs(file_paths, session_id):
         all_pages.extend(pages)
     
     # Split text into chunks
-    text_splitter = NLTKTextSplitter(chunk_size=700, chunk_overlap=100)
+    text_splitter = NLTKTextSplitter(chunk_size=1500, chunk_overlap=100)
     chunks = text_splitter.split_documents(all_pages)
     
     # Create embeddings and vectorstore
